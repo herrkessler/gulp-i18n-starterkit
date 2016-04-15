@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/herrkessler/gulp-i18n-starterkit"
+    "url": "https://github.com/herrkessler/gulp-i18n-starterkit"
   },
   "devDependencies": {
     "autoprefixer": "*",

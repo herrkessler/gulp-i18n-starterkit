@@ -13,7 +13,7 @@ localizations can be found in
 clone it:
 
 ```bash
-git clone
+git clone git@github.com:herrkessler/gulp-i18n-starterkit.git
 ```
 
 Then install the dependencies:
