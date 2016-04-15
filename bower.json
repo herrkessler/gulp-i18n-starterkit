@@ -1,0 +1,22 @@
+{
+  "name": "gulp-i18n-starterkit",
+  "version": "0.0.1",
+  "authors": [
+    "Sebastian Kessler <sebastian@herrkessler.de>"
+  ],
+  "description": "",
+  "main": "gulpfile.js",
+  "moduleType": [
+    "globals"
+  ],
+  "license": "MIT",
+  "homepage": "http://www.herrkessler.de",
+  "devDependencies": {
+    "html5shiv": "latest",
+    "selectivizr": "latest",
+    "calc-polyfill": "latest",
+    "jquery": "latest",
+    "include-media": "latest",
+    "include-media-export": "latest"
+  }
+}

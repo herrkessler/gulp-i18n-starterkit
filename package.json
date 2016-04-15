@@ -1,0 +1,46 @@
+{
+  "name": "gulp-i18n-starterkit",
+  "version": "0.0.1",
+  "description": "a GULP setup for static localized website",
+  "keywords": "gulp, lost, bourbon, html5shiv, selectivizr, scss, starterkit, i18n",
+  "license": "BSD-3-Clause",
+  "main": "gulpfile.js",
+  "email": "sebastian@herrkessler.de",
+  "author": {
+    "name": "Sebastian Kessler",
+    "email": "sebastian@herrkessler.de",
+    "url": "http://www.herrkessler.de"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/herrkessler/gulp-i18n-starterkit"
+  },
+  "devDependencies": {
+    "autoprefixer": "*",
+    "browser-sync": "*",
+    "colors": "*",
+    "express": "*",
+    "gulp": "*",
+    "gulp-concat": "*",
+    "gulp-cssnano": "*",
+    "gulp-gzip": "*",
+    "gulp-include": "*",
+    "gulp-international": "*",
+    "gulp-jade": "*",
+    "gulp-plumber": "*",
+    "gulp-postcss": "*",
+    "gulp-rename": "*",
+    "gulp-sass": "*",
+    "gulp-sourcemaps": "*",
+    "gulp-uglify": "^*",
+    "gulp-util": "*",
+    "gulp-sitemap": "*",
+    "lost": "*",
+    "marked": "*",
+    "node-bourbon": "*",
+    "node-neat": "*",
+    "postcss-import": "*",
+    "sanitize.css": "*",
+    "tiny-lr": "*"
+  }
+}

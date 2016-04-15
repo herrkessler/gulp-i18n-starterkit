@@ -1,0 +1,5 @@
+$max-width: em($containerWidth);
+
+$desktop: new-breakpoint(max-width $desktopWidth);
+$tablet: new-breakpoint(max-width $tabletWidth);
+$mobile: new-breakpoint(max-width $mobileWidth);
