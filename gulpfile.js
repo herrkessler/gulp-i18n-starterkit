@@ -28,6 +28,8 @@ var gulp        = require('gulp'),
     autoprefixer = require('autoprefixer'),
     atImport    = require("postcss-import"),
     sitemap     = require('gulp-sitemap'),
+    imagemin    = require('gulp-imagemin'),
+    pngquant    = require('imagemin-pngquant'),
     reload      = browserSync.reload,
     server      = tinylr();
 
@@ -180,6 +182,7 @@ gulp.task('watch', function() {
     gulp.watch(paths.styles.src + '**/*.scss', ['css']);
     gulp.watch(paths.scripts.src + '**/*.js', ['js']);
     gulp.watch(paths.templates.src + '**/*.jade', ['templates']);
+    gulp.watch(paths.images.src + '**/*.*', ['images']);
 
   });
 });
@@ -230,7 +233,12 @@ gulp.task('templates-prod', function() {
 
 gulp.task('images-prod', function() {
   return gulp
-    .src(paths.images.src + '**/*')
+    .src(paths.images.src + '**/*.*')
+    .pipe(imagemin({
+			progressive: true,
+			svgoPlugins: [{removeViewBox: false}],
+			use: [pngquant()]
+		}))
     .pipe(gulp.dest(paths.images.build));
 });
 

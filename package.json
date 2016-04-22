@@ -35,6 +35,8 @@
     "gulp-uglify": "^*",
     "gulp-util": "*",
     "gulp-sitemap": "*",
+    "gulp-imagemin": "*",
+    "imagemin-pngquant": "*",
     "lost": "*",
     "marked": "*",
     "node-bourbon": "*",
