@@ -163,7 +163,8 @@ gulp.task('templates', function() {
         }))
         .pipe(international({
             filename: '${lang}/${name}.${ext}',
-            verbose: true
+            verbose: true,
+            rootLang: 'de'
         }))
         .pipe(gulp.dest(paths.templates.dist))
         .pipe(reload({
@@ -232,7 +233,8 @@ gulp.task('templates-prod', function() {
             pretty: false
         }))
         .pipe(international({
-            filename: '${lang}/${name}.${ext}'
+            filename: '${lang}/${name}.${ext}',
+            rootLang: 'de'
         }))
         .pipe(gulp.dest(paths.templates.build));
 });
