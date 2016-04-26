@@ -26,7 +26,7 @@
     "gulp-gzip": "*",
     "gulp-imagemin": "*",
     "gulp-include": "*",
-    "gulp-international": "git+ssh://git@github.com/herrkessler/gulp-international.git",
+    "gulp-international": "git+https://github.com/herrkessler/gulp-international",
     "gulp-jade": "*",
     "gulp-nsp": "*",
     "gulp-plumber": "*",
