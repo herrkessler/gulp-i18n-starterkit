@@ -2,7 +2,7 @@
 
 ### a GULP setup for static localized website
 
-localizations can be found in
+localizations use a modified verision of [gulp-international](https://github.com/herrkessler/gulp-international) and can be found in
 
 ```bash
 ./locales/*.json
@@ -35,7 +35,8 @@ gulp
 gulp build
 ```
  for production.
-
 ---
+
+Don't forget to set your `rootLang` variable in the `templates` & `templates-prod` tasks. 
 
 Created by [Sebastian Kessler](http://herrkessler.de)
