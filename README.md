@@ -32,11 +32,11 @@ gulp
  or
 
 ```bash
-gulp build
+gulp --production
 ```
- for production.
+for production.
 ---
 
-Don't forget to set your `rootLang` variable in the `templates` & `templates-prod` tasks. 
+Don't forget to set your `rootLang` variable in the `templates` & `templates-prod` tasks.
 
 Created by [Sebastian Kessler](http://herrkessler.de)

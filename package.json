@@ -37,6 +37,7 @@
     "gulp-sourcemaps": "*",
     "gulp-uglify": "^*",
     "gulp-util": "*",
+    "gulp-if": "*",
     "imagemin-pngquant": "*",
     "lost": "*",
     "marked": "*",
@@ -44,6 +45,7 @@
     "node-neat": "*",
     "postcss-import": "*",
     "sanitize.css": "*",
-    "tiny-lr": "*"
+    "tiny-lr": "*",
+    "yargs":"*"
   }
 }

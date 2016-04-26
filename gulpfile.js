@@ -26,11 +26,13 @@ var gulp = require('gulp'),
     postcss = require('gulp-postcss'),
     lost = require('lost'),
     autoprefixer = require('autoprefixer'),
-    atImport = require("postcss-import"),
+    atImport = require('postcss-import'),
     sitemap = require('gulp-sitemap'),
     imagemin = require('gulp-imagemin'),
     pngquant = require('imagemin-pngquant'),
     gulpNSP = require('gulp-nsp'),
+    argv = require('yargs').argv,
+    gulpif = require('gulp-if'),
     reload = browserSync.reload,
     server = tinylr();
 
@@ -42,60 +44,69 @@ var paths = {
     styles: {
         src: 'src/assets/stylesheets/',
         dist: 'dist/assets/css/',
-        build: 'build/assets/css/'
+        build: 'build/assets/css/',
     },
     scripts: {
         src: 'src/assets/scripts/',
         dist: 'dist/assets/js/',
-        build: 'build/assets/js/'
+        build: 'build/assets/js/',
     },
     fonts: {
         src: 'src/assets/fonts/',
         dist: 'dist/assets/fonts/',
-        build: 'build/assets/fonts/'
+        build: 'build/assets/fonts/',
     },
     images: {
         src: 'src/assets/images/',
         dist: 'dist/assets/images/',
-        build: 'build/assets/images/'
+        build: 'build/assets/images/',
     },
     templates: {
         src: 'src/views/',
         dist: 'dist/',
-        build: 'build/'
+        build: 'build/',
     }
 };
 
 // -------------------------------------------------------------
-// --- Bower File Lists for SCSS, JS, IE, FONTS, etc. ---
+// --- File Lists for SCSS, JS, IE, FONTS, etc. ---
 // -------------------------------------------------------------
 
 var bowerPath = 'bower_components/';
+var npmPath = 'node_modules/';
 
 var cssFiles = [
     bowerPath + 'include-media/dist/',
-    bowerPath + 'include-media-export/dist/'
+    bowerPath + 'include-media-export/dist/',
+    npmPath + 'sanitize.css/lib/',
 ];
 
 var jsFiles = [
     bowerPath + 'jquery/dist/jquery.js',
     bowerPath + 'include-media-export/dist/include-media-1.0.1.min.js',
-    paths.scripts.src + 'app.js'
+    paths.scripts.src + 'app.js',
 ];
 
 var ieFiles = [
     bowerPath + 'jquery/dist/jquery.js',
     bowerPath + 'html5shiv/dist/html5shiv.js',
     bowerPath + 'selectivizr/selectivizr.js',
-    bowerPath + 'calc-polyfill/calc.js'
+    bowerPath + 'calc-polyfill/calc.js',
 ];
 
 var fontFiles = [
-    paths.fonts.src + '**/**.*'
+    paths.fonts.src + '**/**.*',
 ];
 
 // -------------------------------------------------------------
-// --- Basic Tasks ---
+// --- Root Language & Site URL ---
+// -------------------------------------------------------------
+
+var defaultLang = 'de';
+var siteURL = 'http://example-site.com';
+
+// -------------------------------------------------------------
+// --- Tasks ---
 // -------------------------------------------------------------
 
 gulp.task('css', function() {
@@ -111,17 +122,21 @@ gulp.task('css', function() {
     return gulp
         .src(paths.styles.src + '*.scss')
         .pipe(plumber({
-            errorHandler: onError
+            errorHandler: onError,
         }))
         .pipe(sourcemaps.init())
         .pipe(sass({
-            includePaths: cssFiles.concat(neat)
+            includePaths: cssFiles.concat(neat),
         }))
         .pipe(postcss([
             lost(),
             autoprefixer(),
-            atImport()
+            atImport(),
         ]))
+        .pipe(gulpif(argv.production, nano()))
+        .pipe(gulpif(argv.production, gulp.dest(paths.styles.build)))
+        .pipe(gulpif(argv.production, gzip()))
+        .pipe(gulpif(argv.production, gulp.dest(paths.styles.build)))
         .pipe(sourcemaps.write())
         .pipe(gulp.dest(paths.styles.dist))
         .pipe(browserSync.stream());
@@ -130,6 +145,7 @@ gulp.task('css', function() {
 gulp.task('fonts', function() {
     return gulp
         .src(fontFiles)
+        .pipe(gulpif(argv.production, gulp.dest(paths.fonts.build)))
         .pipe(gulp.dest(paths.fonts.dist));
 });
 
@@ -137,152 +153,113 @@ gulp.task('js', function() {
     return gulp
         .src(jsFiles)
         .pipe(include())
+        .pipe(sourcemaps.init())
         .pipe(concat('all.js'))
+        .pipe(gulpif(argv.production, uglify()))
+        .pipe(gulpif(argv.production, concat('all.js')))
+        .pipe(gulpif(argv.production, gulp.dest(paths.scripts.build)))
+        .pipe(gulpif(argv.production, gzip()))
+        .pipe(gulpif(argv.production, gulp.dest(paths.scripts.build)))
+        .pipe(sourcemaps.write())
         .pipe(gulp.dest(paths.scripts.dist))
         .pipe(reload({
-            stream: true
+            stream: true,
         }));
 });
 
 gulp.task('images', function() {
     return gulp
         .src(paths.images.src + '**/*')
+        .pipe(gulpif(argv.production, imagemin({
+            progressive: true,
+            svgoPlugins: [{
+                removeViewBox: false,
+            }, ],
+            use: [pngquant()],
+        })))
+        .pipe(gulpif(argv.production, gulp.dest(paths.images.build)))
         .pipe(gulp.dest(paths.images.dist));
 });
 
 gulp.task('ie', function() {
     return gulp
         .src(ieFiles)
+        .pipe(gulpif(argv.production, gulp.dest(paths.scripts.build + '/ie/')))
         .pipe(gulp.dest(paths.scripts.dist + '/ie/'));
 });
 
 gulp.task('templates', function() {
     return gulp
         .src(paths.templates.src + '*.jade')
+        .pipe(gulpif(argv.production, jade({
+            pretty: false,
+        })))
+        .pipe(gulpif(argv.production, international({
+            filename: '${lang}/${name}.${ext}',
+            rootLang: defaultLang,
+        })))
+        .pipe(gulpif(argv.production, gulp.dest(paths.templates.build)))
         .pipe(jade({
-            pretty: true
+            pretty: true,
         }))
         .pipe(international({
             filename: '${lang}/${name}.${ext}',
             verbose: true,
-            rootLang: 'de'
+            rootLang: defaultLang,
         }))
         .pipe(gulp.dest(paths.templates.dist))
         .pipe(reload({
-            stream: true
+            stream: true,
         }));
 });
 
+gulp.task('sitemap', function() {
+    if (argv.production) {
+        gulp.src('./build/**/*.html')
+            .pipe(sitemap({
+                siteUrl: siteURL,
+            }))
+            .pipe(gulp.dest('./build'));
+    } else {
+
+    }
+});
+
+gulp.task('nsp', function(cb) {
+    if (argv.production) {
+        gulpNSP({
+            package: __dirname + '/package.json'
+        }, cb);
+    } else {}
+});
+
 gulp.task('browser-sync', function() {
-    browserSync.init({
-        server: {
-            baseDir: 'dist/'
-        }
-    });
+    if (argv.production) {
+        gutil.log('Production ENV - Nothing to sync'.yellow);
+    } else {
+        browserSync.init({
+            server: {
+                baseDir: 'dist/',
+            },
+        });
+    }
 });
 
 gulp.task('watch', function() {
-    server.listen(35728, function(err) {
-        if (err) {
-            return console.log(err);
-        }
+    if (argv.production) {
+        gutil.log('Production ENV - Nothing to watch'.yellow);
+    } else {
+        server.listen(35728, function(err) {
+            if (err) {
+                return console.log(err);
+            }
 
-        gulp.watch(paths.styles.src + '**/*.scss', ['css']);
-        gulp.watch(paths.scripts.src + '**/*.js', ['js']);
-        gulp.watch(paths.templates.src + '**/*.jade', ['templates']);
-        gulp.watch(paths.images.src + '**/*.*', ['images']);
-
-    });
+            gulp.watch(paths.styles.src + '**/*.scss', ['css']);
+            gulp.watch(paths.scripts.src + '**/*.js', ['js']);
+            gulp.watch(paths.templates.src + '**/*.jade', ['templates']);
+            gulp.watch(paths.images.src + '**/*.*', ['images']);
+        });
+    }
 });
 
-gulp.task('default', ['js', 'ie', 'css', 'templates', 'images', 'fonts', 'watch', 'browser-sync']);
-
-// -------------------------------------------------------------
-// --- Production Build Tasks ---
-// -------------------------------------------------------------
-
-gulp.task('css-prod', function() {
-    return gulp
-        .src(paths.styles.src + '*.scss')
-        .pipe(
-            sass({
-                includePaths: cssFiles.concat(neat)
-            }))
-        .pipe(gulp.dest(paths.styles.dist))
-        .pipe(postcss([
-            lost(),
-            autoprefixer(),
-            atImport()
-        ]))
-        .pipe(nano())
-        .pipe(gulp.dest(paths.styles.build));
-});
-
-gulp.task('js-prod', function() {
-    return gulp
-        .src(jsFiles)
-        .pipe(include())
-        .pipe(uglify())
-        .pipe(concat('all.js'))
-        .pipe(gulp.dest(paths.scripts.build));
-});
-
-gulp.task('templates-prod', function() {
-    return gulp
-        .src(paths.templates.src + '*.jade')
-        .pipe(jade({
-            pretty: false
-        }))
-        .pipe(international({
-            filename: '${lang}/${name}.${ext}',
-            rootLang: 'de'
-        }))
-        .pipe(gulp.dest(paths.templates.build));
-});
-
-gulp.task('images-prod', function() {
-    return gulp
-        .src(paths.images.src + '**/*.*')
-        .pipe(imagemin({
-            progressive: true,
-            svgoPlugins: [{
-                removeViewBox: false
-            }],
-            use: [pngquant()]
-        }))
-        .pipe(gulp.dest(paths.images.build));
-});
-
-gulp.task('fonts-prod', function() {
-    return gulp
-        .src(fontFiles)
-        .pipe(gulp.dest(paths.fonts.build));
-});
-
-gulp.task('compress-js', ['js-prod'], function() {
-    return gulp
-        .src(paths.scripts.build + 'all.min.js')
-        .pipe(gzip())
-        .pipe(gulp.dest(paths.scripts.build));
-});
-
-gulp.task('compress-css', ['css-prod'], function() {
-    return gulp
-        .src(paths.styles.build + 'all.min.css')
-        .pipe(gzip())
-        .pipe(gulp.dest(paths.styles.build));
-});
-
-gulp.task('sitemap', function() {
-    gulp.src('./build/**/*.html')
-        .pipe(sitemap({
-            siteUrl: 'http://diedame.de'
-        }))
-        .pipe(gulp.dest('./build'));
-});
-
-gulp.task('nsp', function (cb) {
-  gulpNSP({package: __dirname + '/package.json'}, cb);
-});
-
-gulp.task('build', ['compress-js', 'compress-css', 'templates-prod', 'images-prod', 'fonts-prod', 'sitemap', 'nsp']);
+gulp.task('default', ['js', 'ie', 'css', 'templates', 'images', 'fonts', 'watch', 'browser-sync', 'sitemap', 'nsp']);
