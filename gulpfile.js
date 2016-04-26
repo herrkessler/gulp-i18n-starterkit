@@ -30,6 +30,7 @@ var gulp = require('gulp'),
     sitemap = require('gulp-sitemap'),
     imagemin = require('gulp-imagemin'),
     pngquant = require('imagemin-pngquant'),
+    gulpNSP = require('gulp-nsp'),
     reload = browserSync.reload,
     server = tinylr();
 
@@ -280,4 +281,8 @@ gulp.task('sitemap', function() {
         .pipe(gulp.dest('./build'));
 });
 
-gulp.task('build', ['compress-js', 'compress-css', 'templates-prod', 'images-prod', 'fonts-prod', 'sitemap']);
+gulp.task('nsp', function (cb) {
+  gulpNSP({package: __dirname + '/package.json'}, cb);
+});
+
+gulp.task('build', ['compress-js', 'compress-css', 'templates-prod', 'images-prod', 'fonts-prod', 'sitemap', 'nsp']);

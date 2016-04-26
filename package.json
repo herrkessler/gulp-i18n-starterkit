@@ -28,6 +28,7 @@
     "gulp-include": "*",
     "gulp-international": "git+ssh://git@github.com/herrkessler/gulp-international.git",
     "gulp-jade": "*",
+    "gulp-nsp": "^2.4.0",
     "gulp-plumber": "*",
     "gulp-postcss": "*",
     "gulp-rename": "*",
