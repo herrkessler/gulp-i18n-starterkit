@@ -1,3 +1,3 @@
 $(document).ready(function(){
-    console.log(im.getActive());
+  console.log(im.getActive());
 });
