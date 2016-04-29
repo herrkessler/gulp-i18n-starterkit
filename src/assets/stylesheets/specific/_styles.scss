@@ -54,12 +54,26 @@ img {
   }
 }
 
+$baseSize: 30px;
+
+#icon {
+  position: absolute;
+  top: $baseSize;
+  right: $baseSize;
+  @include size($baseSize);
+  background: resolve('example.jpg') center center no-repeat;
+  background-size: cover;
+  border-radius: 50%;
+  border: 1px solid white;
+}
+
 #mainnav {
   position: absolute;
-  left: 50px;
-  top: 50px;
+  left: $baseSize;
+  top: $baseSize;
   color: white;
   font-family: Open Sans, sans-serif;
+  font-size: 1.2rem;
   a {
     color: inherit;
   }
@@ -67,8 +81,8 @@ img {
 
 #footer {
   position: absolute;
-  bottom: 50px;
-  left: 50px;
+  bottom: $baseSize;
+  left: $baseSize;
   p {
     font-family: Open Sans, sans-serif;
     font-size: 16px;

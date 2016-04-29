@@ -33,6 +33,7 @@ var gulp = require('gulp'),
     gulpNSP = require('gulp-nsp'),
     argv = require('yargs').argv,
     gulpif = require('gulp-if'),
+    assets  = require('postcss-assets'),
     reload = browserSync.reload,
     server = tinylr();
 
@@ -132,6 +133,11 @@ gulp.task('css', function() {
             lost(),
             autoprefixer(),
             atImport(),
+            assets({
+              basePath: 'src/assets/',
+              loadPaths: ['images/', 'fonts/'],
+              relative: true
+            })
         ]))
         .pipe(gulpif(argv.production, nano()))
         .pipe(gulpif(argv.production, gulp.dest(paths.styles.build)))

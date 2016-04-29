@@ -44,6 +44,7 @@
     "node-bourbon": "*",
     "node-neat": "*",
     "postcss-import": "*",
+    "postcss-assets": "",
     "sanitize.css": "*",
     "tiny-lr": "*",
     "yargs":"*"
