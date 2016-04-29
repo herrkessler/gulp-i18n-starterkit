@@ -1,7 +1,8 @@
-$(document).ready(function(){
-  WebFont.load({
-      google: {
-        families: ['Open Sans']
-      },
-    });
+WebFont.load({
+  google: {
+    families: ['Open Sans']
+  },
+  active: function() {
+    sessionStorage.fonts = true;
+  }
 });

@@ -12,7 +12,17 @@ link(rel='shortcut icon', href='/assets/images/favicon.ico', type='image/x-icon'
 
 link(href="/assets/css/all.css", rel='stylesheet')
 script(src="/assets/js/all.js", type="text/javascript", async)
-    
+
+script.
+  (function() {
+    if (sessionStorage.fonts) {
+      console.log("Fonts installed.");
+      document.documentElement.classList.add('wf-active');
+    } else {
+      console.log("No fonts installed.");
+    }
+  })();
+  
 block title
   title website title
 
