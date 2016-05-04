@@ -2,35 +2,35 @@
 // Bourbon & Neat
 // -----------------------------------------------------------------------
 
-@import "bourbon";
-@import "neat";
-@import "neat-helpers";
+@import 'bourbon';
+@import 'neat';
+@import 'neat-helpers';
 
 // -----------------------------------------------------------------------
 // Libraries
 // -----------------------------------------------------------------------
 
-@import "sanitize.scss";
-@import "include-media";
-@import "include-media-export";
+@import 'sanitize.scss';
+@import 'include-media';
+@import 'include-media-export';
 
 // -----------------------------------------------------------------------
 // Variables, Colors & Custom Mixins
 // -----------------------------------------------------------------------
 
-@import "var/colors";
-@import "var/variables";
-@import "var/mixins";
-@import "var/breakpoints";
+@import 'var/colors';
+@import 'var/variables';
+@import 'var/mixins';
+@import 'var/breakpoints';
 
 // -----------------------------------------------------------------------
 // Variables, Colors & Custom Mixins
 // -----------------------------------------------------------------------
 
-@import "grid/grid-settings";
+@import 'grid/grid-settings';
 
 // -----------------------------------------------------------------------
 // Specific Styles
 // -----------------------------------------------------------------------
 
-@import "specific/styles";
+@import 'specific/styles';
