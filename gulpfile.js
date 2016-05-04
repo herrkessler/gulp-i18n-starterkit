@@ -33,6 +33,7 @@ var gulp = require('gulp'),
     gulpNSP = require('gulp-nsp'),
     argv = require('yargs').argv,
     gulpif = require('gulp-if'),
+    sassLint = require('gulp-sass-lint'),
     assets = require('postcss-assets'),
     reload = browserSync.reload,
     server = tinylr();
@@ -125,6 +126,9 @@ gulp.task('css', function() {
         .pipe(plumber({
             errorHandler: onError,
         }))
+        .pipe(sassLint())
+        .pipe(sassLint.format())
+        .pipe(sassLint.failOnError())
         .pipe(sourcemaps.init())
         .pipe(sass({
             includePaths: cssFiles.concat(neat),
