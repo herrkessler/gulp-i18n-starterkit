@@ -80,7 +80,7 @@ var npmPath = 'node_modules/';
 var cssFiles = [
     bowerPath + 'include-media/dist/',
     bowerPath + 'include-media-export/dist/',
-    npmPath + 'sanitize.css/lib/',
+    bowerPath + 'reset-css/',
 ];
 
 var jsFiles = [

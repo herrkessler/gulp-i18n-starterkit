@@ -16,6 +16,7 @@
     "selectivizr": "latest",
     "calc-polyfill": "latest",
     "jquery": "latest",
+    "reset-css": "latest",
     "include-media": "latest",
     "include-media-export": "latest"
   }

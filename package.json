@@ -46,7 +46,6 @@
     "node-neat": "*",
     "postcss-assets": "",
     "postcss-import": "*",
-    "sanitize.css": "*",
     "tiny-lr": "*",
     "yargs": "^4.6.0"
   }
